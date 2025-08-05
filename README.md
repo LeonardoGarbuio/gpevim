@@ -121,16 +121,26 @@ CREATE TABLE admin_users (
 ### Autenticação
 - `POST /api/login` - Autentica usuário administrativo
 
-## 🔐 Credenciais de Acesso
+## 🔐 Acesso à Área Administrativa
 
-### Credenciais Padrão
-- **Usuário**: `ADM`
-- **Senha**: `fisica`
+### Métodos de Acesso
 
-### Métodos de Acesso à Área Administrativa
-
-1. **Link direto**: Acesse `http://localhost:3000/login.html`
+1. **Link direto**: Acesse `http://localhost:3000/login.html` (desenvolvimento local)
 2. **Link discreto**: Procure pelo link "Admin" no rodapé de qualquer página do site
+
+### ⚠️ Configuração de Credenciais
+
+**IMPORTANTE**: As credenciais de acesso devem ser configuradas de forma segura:
+
+1. **Para desenvolvimento local**: Configure as credenciais no arquivo `js/server.js`
+2. **Para produção**: Use variáveis de ambiente no Render ou outro provedor
+3. **Nunca commite credenciais** no repositório público
+
+### 🔒 Segurança
+
+- Altere as credenciais padrão antes do deploy
+- Use senhas fortes e únicas
+- Considere implementar autenticação mais robusta para produção
 
 ## 🌐 Deploy no Render
 
@@ -159,9 +169,16 @@ CREATE TABLE admin_users (
 No seu Web Service, adicione as seguintes variáveis:
 
 ```
-DATABASE_URL=postgresql://gpevim_user:senha@host:5432/gpevim_db
+DATABASE_URL=postgresql://gpevim_user:SUA_SENHA_AQUI@host:5432/gpevim_db
 NODE_ENV=production
+ADMIN_USERNAME=seu_usuario_admin
+ADMIN_PASSWORD=sua_senha_forte
 ```
+
+**⚠️ IMPORTANTE**: 
+- Substitua `SUA_SENHA_AQUI` pela senha real do banco de dados
+- Configure `ADMIN_USERNAME` e `ADMIN_PASSWORD` com credenciais seguras
+- Nunca use credenciais padrão em produção
 
 ### 4. Deploy
 
@@ -217,6 +234,38 @@ Para contribuir com o projeto:
 2. Crie uma branch para sua feature
 3. Commit suas mudanças
 4. Abra um Pull Request
+
+## 🔒 Segurança e Boas Práticas
+
+### ⚠️ Configuração de Segurança
+
+1. **Credenciais de Banco de Dados**:
+   - Use senhas fortes e únicas
+   - Nunca commite credenciais no repositório
+   - Use variáveis de ambiente em produção
+
+2. **Credenciais de Administrador**:
+   - Altere as credenciais padrão antes do deploy
+   - Use autenticação robusta em produção
+   - Considere implementar autenticação de dois fatores
+
+3. **Upload de Arquivos**:
+   - O sistema aceita apenas imagens
+   - Tamanho máximo: 5MB por arquivo
+   - Validação de tipo de arquivo implementada
+
+4. **Proteção de Dados**:
+   - Dados sensíveis não são expostos publicamente
+   - Área administrativa protegida por autenticação
+   - Logs de acesso podem ser implementados
+
+### 🛡️ Recomendações para Produção
+
+- Implemente HTTPS
+- Configure firewall adequado
+- Faça backups regulares do banco de dados
+- Monitore logs de acesso
+- Mantenha dependências atualizadas
 
 ## 📞 Suporte
 
