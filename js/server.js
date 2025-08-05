@@ -171,6 +171,34 @@ app.get('/api/publications', async (req, res) => {
   }
 });
 
+// GET - Buscar publicação específica
+app.get('/api/publications/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Tentar buscar do banco de dados
+    try {
+      const result = await pool.query('SELECT * FROM publications WHERE id = $1', [id]);
+      if (result.rows.length > 0) {
+        return res.json(result.rows[0]);
+      }
+    } catch (dbError) {
+      console.log('Banco de dados não disponível, tentando buscar localmente');
+    }
+    
+    // Se não encontrou no banco, tentar buscar localmente
+    const localPublication = localPublications.find(pub => pub.id == id);
+    if (localPublication) {
+      return res.json(localPublication);
+    }
+    
+    res.status(404).json({ error: 'Publicação não encontrada' });
+  } catch (error) {
+    console.error('Erro ao buscar publicação:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 // POST - Adicionar nova publicação
 app.post('/api/publications', async (req, res) => {
   try {
@@ -212,6 +240,55 @@ app.post('/api/publications', async (req, res) => {
     res.status(201).json(publication);
   } catch (error) {
     console.error('Erro ao adicionar publicação:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// PUT - Atualizar publicação
+app.put('/api/publications/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, author, imageUrl, publicationUrl, description } = req.body;
+    
+    if (!title || !author || !imageUrl || !publicationUrl || !description) {
+      return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    }
+    
+    let updated = false;
+    
+    // Tentar atualizar no banco de dados
+    try {
+      const result = await pool.query(
+        'UPDATE publications SET title = $1, author = $2, image_url = $3, publication_url = $4, description = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING *',
+        [title, author, imageUrl, publicationUrl, description, id]
+      );
+      if (result.rows.length > 0) {
+        console.log('Publicação atualizada no banco de dados');
+        return res.json(result.rows[0]);
+      }
+    } catch (dbError) {
+      console.log('Banco de dados não disponível, tentando atualizar localmente');
+    }
+    
+    // Se não encontrou no banco, tentar atualizar localmente
+    const localIndex = localPublications.findIndex(pub => pub.id == id);
+    if (localIndex !== -1) {
+      localPublications[localIndex] = {
+        ...localPublications[localIndex],
+        title,
+        author,
+        image_url: imageUrl,
+        publication_url: publicationUrl,
+        description,
+        updated_at: new Date().toISOString()
+      };
+      console.log('Publicação atualizada localmente');
+      return res.json(localPublications[localIndex]);
+    }
+    
+    res.status(404).json({ error: 'Publicação não encontrada' });
+  } catch (error) {
+    console.error('Erro ao atualizar publicação:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
@@ -292,6 +369,34 @@ app.get('/api/members', async (req, res) => {
   }
 });
 
+// GET - Buscar membro específico
+app.get('/api/members/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Tentar buscar do banco de dados
+    try {
+      const result = await pool.query('SELECT * FROM members WHERE id = $1', [id]);
+      if (result.rows.length > 0) {
+        return res.json(result.rows[0]);
+      }
+    } catch (dbError) {
+      console.log('Banco de dados não disponível, tentando buscar localmente');
+    }
+    
+    // Se não encontrou no banco, tentar buscar localmente
+    const localMember = localMembers.find(member => member.id == id);
+    if (localMember) {
+      return res.json(localMember);
+    }
+    
+    res.status(404).json({ error: 'Membro não encontrado' });
+  } catch (error) {
+    console.error('Erro ao buscar membro:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 // POST - Adicionar novo membro
 app.post('/api/members', async (req, res) => {
   try {
@@ -334,6 +439,54 @@ app.post('/api/members', async (req, res) => {
     res.status(201).json(member);
   } catch (error) {
     console.error('Erro ao adicionar membro:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// PUT - Atualizar membro
+app.put('/api/members/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, role, imageUrl, lattesUrl, researchTopic, category } = req.body;
+    
+    if (!name || !role || !imageUrl || !category) {
+      return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' });
+    }
+    
+    // Tentar atualizar no banco de dados
+    try {
+      const result = await pool.query(
+        'UPDATE members SET name = $1, role = $2, image_url = $3, lattes_url = $4, research_topic = $5, category = $6, updated_at = CURRENT_TIMESTAMP WHERE id = $7 RETURNING *',
+        [name, role, imageUrl, lattesUrl, researchTopic, category, id]
+      );
+      if (result.rows.length > 0) {
+        console.log('Membro atualizado no banco de dados');
+        return res.json(result.rows[0]);
+      }
+    } catch (dbError) {
+      console.log('Banco de dados não disponível, tentando atualizar localmente');
+    }
+    
+    // Se não encontrou no banco, tentar atualizar localmente
+    const localIndex = localMembers.findIndex(member => member.id == id);
+    if (localIndex !== -1) {
+      localMembers[localIndex] = {
+        ...localMembers[localIndex],
+        name,
+        role,
+        image_url: imageUrl,
+        lattes_url: lattesUrl || null,
+        research_topic: researchTopic || null,
+        category,
+        updated_at: new Date().toISOString()
+      };
+      console.log('Membro atualizado localmente');
+      return res.json(localMembers[localIndex]);
+    }
+    
+    res.status(404).json({ error: 'Membro não encontrado' });
+  } catch (error) {
+    console.error('Erro ao atualizar membro:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });

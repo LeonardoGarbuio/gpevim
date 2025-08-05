@@ -143,6 +143,55 @@
             background: #b71c1c;
         }
         
+        .edit-btn {
+            background: #ffc107;
+            color: #212529;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #000;
+        }
+        
         .success-message {
             background: #4caf50;
             color: white;
@@ -275,6 +324,43 @@
         </div>
     </main>
 
+    <!-- Modal de Edição -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Editar Publicação</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label for="editTitle">Título *</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAuthor">Autor *</label>
+                    <input type="text" id="editAuthor" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Descrição *</label>
+                    <textarea id="editDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editPublicationUrl">URL da Publicação *</label>
+                    <input type="url" id="editPublicationUrl" required>
+                </div>
+                <div class="form-group">
+                    <label for="editImageFile">Nova Imagem (opcional)</label>
+                    <input type="file" id="editImageFile" accept="image/*">
+                    <img id="editImagePreview" class="image-preview" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label for="editImageUrl">URL da Imagem Atual</label>
+                    <input type="url" id="editImageUrl" readonly>
+                </div>
+                <button type="submit" class="btn">Atualizar Publicação</button>
+            </form>
+        </div>
+    </div>
+
     <footer>
         <p>&copy; 2025 GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Todos os direitos reservados.</p>
     </footer>
@@ -312,6 +398,7 @@
                             ${pub.description ? `<p>${pub.description}</p>` : ''}
                             <a href="${pub.publication_url}" target="_blank" class="publication-link">Ver Publicação</a>
                             <br>
+                            <button class="edit-btn" onclick="editPublication(${pub.id})">Editar</button>
                             <button class="delete-btn" onclick="deletePublication(${pub.id})">Excluir</button>
                         </div>
                     </div>
@@ -442,6 +529,128 @@
                 document.getElementById('imagePreview').style.display = 'block';
             } else {
                 document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+
+        // Funções de edição
+        async function editPublication(id) {
+            try {
+                const response = await fetch(`/api/publications/${id}`);
+                if (!response.ok) {
+                    alert('Erro ao carregar dados da publicação');
+                    return;
+                }
+                
+                const publication = await response.json();
+                
+                // Preencher o modal com os dados atuais
+                document.getElementById('editId').value = publication.id;
+                document.getElementById('editTitle').value = publication.title;
+                document.getElementById('editAuthor').value = publication.author;
+                document.getElementById('editDescription').value = publication.description || '';
+                document.getElementById('editPublicationUrl').value = publication.publication_url;
+                document.getElementById('editImageUrl').value = publication.image_url;
+                
+                // Mostrar o modal
+                document.getElementById('editModal').style.display = 'block';
+            } catch (error) {
+                console.error('Erro ao carregar publicação:', error);
+                alert('Erro ao carregar dados da publicação');
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            document.getElementById('editForm').reset();
+            document.getElementById('editImagePreview').style.display = 'none';
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+
+        // Preview da imagem no modal de edição
+        document.getElementById('editImageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('editImagePreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        // Submissão do formulário de edição
+        document.getElementById('editForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('editId').value;
+            let imageUrl = document.getElementById('editImageUrl').value;
+            const imageFile = document.getElementById('editImageFile').files[0];
+            
+            // Se há um arquivo selecionado, fazer upload primeiro
+            if (imageFile && imageFile.size > 0) {
+                try {
+                    const uploadFormData = new FormData();
+                    uploadFormData.append('image', imageFile);
+                    
+                    const uploadResponse = await fetch('/api/upload-image', {
+                        method: 'POST',
+                        body: uploadFormData
+                    });
+                    
+                    if (uploadResponse.ok) {
+                        const uploadResult = await uploadResponse.json();
+                        imageUrl = uploadResult.imageUrl;
+                    } else {
+                        alert('Erro ao fazer upload da nova imagem');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Erro no upload:', error);
+                    alert('Erro ao fazer upload da nova imagem');
+                    return;
+                }
+            }
+            
+            const publicationData = {
+                title: document.getElementById('editTitle').value,
+                author: document.getElementById('editAuthor').value,
+                imageUrl: imageUrl,
+                publicationUrl: document.getElementById('editPublicationUrl').value,
+                description: document.getElementById('editDescription').value
+            };
+            
+            try {
+                const response = await fetch(`/api/publications/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(publicationData)
+                });
+                
+                if (response.ok) {
+                    alert('Publicação atualizada com sucesso!');
+                    closeEditModal();
+                    loadPublications();
+                } else {
+                    const error = await response.json();
+                    alert('Erro ao atualizar publicação: ' + error.error);
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar publicação:', error);
+                alert('Erro ao atualizar publicação. Tente novamente.');
             }
         });
 
