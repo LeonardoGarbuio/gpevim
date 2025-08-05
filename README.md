@@ -227,4 +227,4 @@ Para dúvidas ou problemas:
 ---
 
 **GPEVIM** - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais  
-© 2025 - Todos os direitos reservados 
+© 2025 - Todos os direitos reservados
