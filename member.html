@@ -127,15 +127,15 @@
               html += `
                 <article class="member-card">
                   <img class="member-image" src="${member.image_url}" alt="Foto de ${member.name}" onerror="this.src='img/foto1.jpg'">
-                  <h3 class="member-name">
-                    ${member.name}
-                    ${member.lattes_url ? `
-                      <a href="${member.lattes_url}" target="_blank" rel="noopener noreferrer" class="lattes-link" aria-label="Currículo Lattes de ${member.name}">
-                        <img src="img/icone_lattes.png" alt="Lattes">
-                      </a>
-                    ` : ''}
-                  </h3>
+                  <h3 class="member-name">${member.name}</h3>
                   ${member.research_topic ? `<p class="research-topic">${member.research_topic}</p>` : ''}
+                  <div class="lattes-section" style="margin-top: 10px;">
+                    <img src="img/icone_lattes.png" alt="Lattes" style="width: 20px; height: 20px; vertical-align: middle;">
+                    ${member.lattes_url ? 
+                      `<a href="${member.lattes_url}" target="_blank" rel="noopener noreferrer" class="lattes-link" aria-label="Currículo Lattes de ${member.name}" style="color: #444444d7; text-decoration: none; font-size: 12px; margin-left: 5px;">Ver Lattes</a>` : 
+                      `<span style="color: #999; font-size: 12px; margin-left: 5px;">Lattes não disponível</span>`
+                    }
+                  </div>
                 </article>
               `;
             });

@@ -374,17 +374,23 @@
                     return;
                 }
                 
-                grid.innerHTML = members.map(member => `
-                    <div class="member-card">
-                        <img src="${member.image_url}" alt="${member.name}" class="member-image" onerror="this.src='img/foto1.jpg'">
-                        <div class="member-name">${member.name}</div>
-                        <div class="member-role">${member.role}</div>
-                        <div class="member-category">${getCategoryName(member.category)}</div>
-                        ${member.research_topic ? `<div class="member-research">${member.research_topic}</div>` : ''}
-                        ${member.lattes_url ? `<a href="${member.lattes_url}" target="_blank" style="color: #444444d7; text-decoration: none; font-size: 12px;">Ver Lattes</a><br>` : ''}
-                        <button class="delete-btn" onclick="deleteMember(${member.id})">Remover</button>
-                    </div>
-                `).join('');
+                                 grid.innerHTML = members.map(member => `
+                     <div class="member-card">
+                         <img src="${member.image_url}" alt="${member.name}" class="member-image" onerror="this.src='img/foto1.jpg'">
+                         <div class="member-name">${member.name}</div>
+                         <div class="member-role">${member.role}</div>
+                         <div class="member-category">${getCategoryName(member.category)}</div>
+                         ${member.research_topic ? `<div class="member-research">${member.research_topic}</div>` : ''}
+                         <div style="margin-top: 10px;">
+                             <img src="img/icone_lattes.png" alt="Lattes" style="width: 20px; height: 20px; vertical-align: middle;">
+                             ${member.lattes_url ? 
+                                 `<a href="${member.lattes_url}" target="_blank" style="color: #444444d7; text-decoration: none; font-size: 12px; margin-left: 5px;">Ver Lattes</a>` : 
+                                 `<span style="color: #999; font-size: 12px; margin-left: 5px;">Lattes não disponível</span>`
+                             }
+                         </div>
+                         <button class="delete-btn" onclick="deleteMember(${member.id})">Remover</button>
+                     </div>
+                 `).join('');
             } catch (error) {
                 console.error('Erro ao carregar membros:', error);
                 document.getElementById('membersGrid').innerHTML = '<p>Erro ao carregar membros.</p>';
