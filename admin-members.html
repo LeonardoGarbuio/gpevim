@@ -153,6 +153,60 @@
             border-radius: 5px;
             margin-bottom: 20px;
         }
+        
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .members-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .form-group input, .form-group select, .form-group textarea {
+                font-size: 16px; /* Evita zoom no iOS */
+            }
+            
+            .admin-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 16px;
+            }
+            
+            .member-card {
+                padding: 12px;
+            }
+            
+            .member-image {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .admin-section {
+                padding: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .member-name {
+                font-size: 1.1em;
+            }
+            
+            .member-role {
+                font-size: 0.9em;
+            }
+            
+            .member-research {
+                font-size: 0.8em;
+            }
+        }
     </style>
 </head>
 <body>

@@ -156,6 +156,60 @@
             .form-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .publications-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .admin-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 16px;
+            }
+            
+            .form-group input, .form-group textarea {
+                font-size: 16px; /* Evita zoom no iOS */
+            }
+            
+            /* Ajustar layout do header */
+            main > div:first-child {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            main > div:first-child > div {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            main > div:first-child a {
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .admin-section {
+                padding: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .publication-card {
+                padding: 15px;
+            }
+            
+            .publication-title {
+                font-size: 1.1em;
+            }
         }
     </style>
 </head>
