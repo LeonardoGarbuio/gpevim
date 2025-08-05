@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 // Armazenamento local para desenvolvimento
 let localPublications = [];
+let localMembers = [];
 
 // Middleware
 app.use(cors());
@@ -80,11 +81,26 @@ const createUsersTableQuery = `
   );
 `;
 
+// Criar tabela de membros se não existir
+const createMembersTableQuery = `
+  CREATE TABLE IF NOT EXISTS members (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(100) NOT NULL,
+    image_url TEXT NOT NULL,
+    lattes_url TEXT,
+    research_topic TEXT,
+    category VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+`;
+
 // Inicializar banco de dados
 async function initializeDatabase() {
   try {
     await pool.query(createTableQuery);
     await pool.query(createUsersTableQuery);
+    await pool.query(createMembersTableQuery);
     
     // Inserir usuário admin padrão se não existir
     const checkAdminQuery = 'SELECT * FROM admin_users WHERE username = $1';
@@ -234,6 +250,128 @@ app.delete('/api/publications/:id', async (req, res) => {
     }
   } catch (error) {
     console.error('Erro ao remover publicação:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// ===== ROTAS PARA MEMBROS =====
+
+// GET - Listar todos os membros
+app.get('/api/members', async (req, res) => {
+  try {
+    let members = [];
+    
+    // Tentar buscar do banco de dados
+    try {
+      const result = await pool.query('SELECT * FROM members ORDER BY category, name');
+      members = result.rows;
+      console.log('Membros carregados do banco de dados');
+    } catch (dbError) {
+      console.log('Banco de dados não disponível, usando armazenamento local');
+    }
+    
+    // Combinar com membros locais
+    const allMembers = [...members, ...localMembers];
+    
+    // Ordenar por categoria e nome
+    allMembers.sort((a, b) => {
+      const categoryOrder = { 'coordenadores': 1, 'colaboradores': 2, 'iniciacao_cientifica': 3, 'iniciacao_cientifica_junior': 4 };
+      const orderA = categoryOrder[a.category] || 5;
+      const orderB = categoryOrder[b.category] || 5;
+      
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+      return a.name.localeCompare(b.name);
+    });
+    
+    res.json(allMembers);
+  } catch (error) {
+    console.error('Erro ao buscar membros:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// POST - Adicionar novo membro
+app.post('/api/members', async (req, res) => {
+  try {
+    const { name, role, imageUrl, lattesUrl, researchTopic, category } = req.body;
+    
+    if (!name || !role || !imageUrl || !category) {
+      return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' });
+    }
+    
+    const member = {
+      id: Date.now(),
+      name,
+      role,
+      image_url: imageUrl,
+      lattes_url: lattesUrl || null,
+      research_topic: researchTopic || null,
+      category,
+      created_at: new Date().toISOString()
+    };
+    
+    // Tentar salvar no banco de dados
+    try {
+      const query = `
+        INSERT INTO members (name, role, image_url, lattes_url, research_topic, category)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING *
+      `;
+      
+      const result = await pool.query(query, [name, role, imageUrl, lattesUrl, researchTopic, category]);
+      console.log('Membro salvo no banco de dados');
+      
+      // Atualizar o ID com o do banco
+      member.id = result.rows[0].id;
+    } catch (dbError) {
+      console.log('Banco de dados não disponível, salvando localmente');
+      // Salvar localmente se o banco não estiver disponível
+      localMembers.push(member);
+    }
+    
+    res.status(201).json(member);
+  } catch (error) {
+    console.error('Erro ao adicionar membro:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// DELETE - Remover membro
+app.delete('/api/members/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    let deleted = false;
+    
+    // Tentar deletar do banco de dados
+    try {
+      const result = await pool.query('DELETE FROM members WHERE id = $1 RETURNING *', [id]);
+      if (result.rows.length > 0) {
+        console.log('Membro removido do banco de dados');
+        deleted = true;
+      }
+    } catch (dbError) {
+      console.log('Banco de dados não disponível, tentando remover localmente');
+    }
+    
+    // Se não foi deletado do banco, tentar deletar localmente
+    if (!deleted) {
+      const localIndex = localMembers.findIndex(member => member.id == id);
+      if (localIndex !== -1) {
+        localMembers.splice(localIndex, 1);
+        console.log('Membro removido do armazenamento local');
+        deleted = true;
+      }
+    }
+    
+    if (deleted) {
+      res.json({ message: 'Membro removido com sucesso' });
+    } else {
+      res.status(404).json({ error: 'Membro não encontrado' });
+    }
+  } catch (error) {
+    console.error('Erro ao remover membro:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
