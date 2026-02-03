@@ -1,0 +1,340 @@
+* {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    header {
+      background-color: #f9f9f9;
+      border-bottom: 2px solid #ccc;
+    }
+
+    .logo {
+      padding-top: 20px;
+      margin: 10px auto;
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* MENU RESPONSIVO */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9f9f9;
+      border-top: 1px solid #ddd;
+      border-bottom: 2px solid #ccc;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
+      padding: 10px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+
+    .navbar li {
+      margin: 0;
+    }
+
+    .navbar a {
+      display: block;
+      padding: 14px 20px;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+    }
+
+    .navbar a:hover,
+    .navbar a:focus {
+      border-bottom: 3px solid #444444d7;
+      color: #000;
+      outline-offset: -2px;
+    }
+
+    .navbar .active a {
+      color: #000;
+      border-bottom: 3px solid #444444d7;
+    }
+
+    .instagram-link {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .instagram-link:hover,
+    .instagram-link:focus {
+      outline-offset: 2px;
+    }
+
+    .instagram-link img {
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
+    }
+
+    .admin-link-nav {
+      display: none; /* Esconder o link Admin */
+      align-items: center;
+      padding: 10px 15px;
+      background: #444444d7;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-left: 15px;
+    }
+
+    .admin-link-nav:hover,
+    .admin-link-nav:focus {
+      background: #333;
+      transform: scale(1.05);
+    }
+
+    /* CONTEÚDO PRINCIPAL */
+    main {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+    }
+
+    h2 {
+      text-align: center;
+      color: #34495e;
+      margin: 40px 0 30px 0;
+      font-size: 2em;
+      border-bottom: 2px solid #444444d7;
+      padding-bottom: 10px;
+    }
+
+    .members-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      justify-content: center;
+      align-items: stretch;
+      margin-bottom: 40px;
+    }
+
+    .member-card {
+      width: 300px;
+    min-width: 280px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #fefefe;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .member-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .member-name {
+      font-size: 1.2em;
+      margin: 15px 0;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .lattes-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px;
+      border-radius: 3px;
+    }
+
+    .lattes-link img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .research-topic {
+      font-size: 0.9em;
+      margin-top: 15px;
+      color: #555;
+      line-height: 1.4;
+      font-style: italic;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+    #ft {
+      display: block;           /* Torna a imagem um elemento de bloco */
+      margin: 30px auto;        /* Centraliza horizontalmente e adiciona espaço vertical */
+      max-width: 100%;          /* Garante que não ultrapasse o container */
+      height: auto;             /* Mantém a proporção da imagem */
+    }
+    /* RODAPÉ */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: 50px;
+      background-color: #f9f9f9;
+      border-top: 1px solid #ccc;
+      color: #666;
+    }
+
+    /* Link discreto para área administrativa no rodapé */
+    .admin-link-footer {
+      display: inline-block;
+      color: #ccc;
+      text-decoration: none;
+      font-size: 10px;
+      margin-top: 10px;
+      padding: 3px 6px;
+      border-radius: 3px;
+      opacity: 0.6;
+    }
+
+    /* RESPONSIVIDADE */
+
+    @media (max-width: 768px) {
+      #ft {
+        margin: 20px auto;
+       
+      }
+    }
+
+    @media (max-width: 480px) {
+      #ft {
+        margin: 15px auto;
+        
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .admin-link-nav {
+        margin-left: 0;
+        margin-top: 10px;
+        justify-content: center;
+      }
+
+      .navbar ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #f9f9f9;
+        flex-direction: column;
+        z-index: 1000;
+      }
+
+      .navbar ul.active {
+        display: flex;
+      }
+
+      .navbar li {
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .navbar a {
+        padding: 15px 20px;
+        border-bottom: none;
+        border-left: 3px solid transparent;
+      }
+
+      .navbar a:hover,
+      .navbar a:focus {
+        border-left: 3px solid #444444d7;
+        border-bottom: none;
+      }
+
+      .navbar .active a {
+        border-left: 3px solid #444444d7;
+        border-bottom: none;
+      }
+
+      main {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      h2 {
+        font-size: 1.5em;
+      }
+
+      .members-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .member-card {
+        max-width: 100%;
+        min-width: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar {
+        padding: 0 10px;
+      }
+
+      main {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .member-name {
+        font-size: 1.1em;
+      }
+
+      .research-topic {
+        font-size: 0.85em;
+      }
+    }
+
+    

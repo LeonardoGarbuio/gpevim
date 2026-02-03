@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <!-- SEO Meta Tags -->
+  <title>Integrantes - GPEVIM</title>
+  <meta name="description" content="Conheça os integrantes do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Coordenadores, colaboradores e estudantes de iniciação científica.">
+  <meta name="keywords" content="GPEVIM, integrantes, membros, coordenadores, colaboradores, iniciação científica, pesquisa">
+  <meta name="author" content="GPEVIM">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="img/logo.png">
+  <link rel="apple-touch-icon" href="img/logo.png">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gpevim.com/member.html">
+  <meta property="og:title" content="Integrantes - GPEVIM">
+  <meta property="og:description" content="Conheça os integrantes do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Coordenadores, colaboradores e estudantes de iniciação científica.">
+  <meta property="og:image" content="img/logo.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://gpevim.com/member.html">
+  <meta property="twitter:title" content="Integrantes - GPEVIM">
+  <meta property="twitter:description" content="Conheça os integrantes do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Coordenadores, colaboradores e estudantes de iniciação científica.">
+  <meta property="twitter:image" content="img/logo.png">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://gpevim.com/member.html">
+  
+  <link rel="stylesheet" href="css/estilo.css" />
+</head>
+<body>
+  <header>
+    <img class="logo" src="img/logo.png" alt="Logo do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais">
+
+    <nav class="navbar" role="navigation" aria-label="Menu principal">
+      <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+        ☰
+      </button>
+      
+      <ul id="menu-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About us</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li class="active"><a href="member.html" aria-current="page">Members</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="materials.html">Materials</a></li>
+      </ul>
+      
+      <a class="instagram-link" href="https://www.instagram.com/gpevim/?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Seguir GPEVIM no Instagram">
+        <img src="img/instagram.png" alt="Instagram">
+      </a>
+      
+      
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <h1>Members</h1>
+    
+    <div id="membersContainer">
+      <!-- Os membros serão carregados aqui dinamicamente -->
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Todos os direitos reservados.</p>
+            <a href="login.html" class="admin-link-footer" title="Área Administrativa">Admin</a>
+  </footer>
+
+  <script src="js/script.js"></script>
+  
+  <script>
+    // Carregar membros ao carregar a página
+    document.addEventListener('DOMContentLoaded', function() {
+      loadMembers();
+    });
+    
+    async function loadMembers() {
+      try {
+        const response = await fetch('/api/members');
+        const members = await response.json();
+        
+        const container = document.getElementById('membersContainer');
+        
+        if (members.length === 0) {
+          container.innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">Nenhum membro cadastrado no momento.</p>';
+          return;
+        }
+        
+        // Agrupar membros por categoria
+        const groupedMembers = {};
+        members.forEach(member => {
+          if (!groupedMembers[member.category]) {
+            groupedMembers[member.category] = [];
+          }
+          groupedMembers[member.category].push(member);
+        });
+        
+        // Definir ordem das categorias
+        const categoryOrder = ['coordenadores', 'colaboradores', 'iniciacao_cientifica', 'iniciacao_cientifica_junior'];
+        const categoryNames = {
+          'coordenadores': 'Coordenadores',
+          'colaboradores': 'Colaboradores',
+          'iniciacao_cientifica': 'Iniciação Científica',
+          'iniciacao_cientifica_junior': 'Iniciação Científica Júnior'
+        };
+        
+        let html = '';
+        
+        categoryOrder.forEach(category => {
+          if (groupedMembers[category] && groupedMembers[category].length > 0) {
+            html += `
+              <section aria-labelledby="${category}-heading">
+                <h2 id="${category}-heading">${categoryNames[category]}</h2>
+                <div class="members-grid">
+            `;
+            
+                         groupedMembers[category].forEach(member => {
+               html += `
+                 <article class="member-card">
+                   <img class="member-image" src="${member.image_url}" alt="Foto de ${member.name}" onerror="this.src='img/foto1.jpg'">
+                   <h3 class="member-name">${member.name}</h3>
+                   <div class="member-role" style="color: #666; font-size: 14px; margin-bottom: 8px;">${member.role}</div>
+                   ${member.research_topic ? `<p class="research-topic">${member.research_topic}</p>` : ''}
+                   <div class="lattes-section" style="margin-top: 10px;">
+                     ${member.lattes_url ? 
+                       `<a href="${member.lattes_url}" target="_blank" rel="noopener noreferrer" class="lattes-link" aria-label="Currículo Lattes de ${member.name}" style="text-decoration: none;">
+                           <img src="img/icone_lattes.png" alt="Lattes" style="width: 20px; height: 20px;">
+                       </a>` : 
+                       `<img src="img/icone_lattes.png" alt="Lattes" style="width: 20px; height: 20px; opacity: 0.5;">`
+                     }
+                   </div>
+                 </article>
+               `;
+             });
+            
+            html += `
+                </div>
+              </section>
+            `;
+          }
+        });
+        
+        container.innerHTML = html;
+      } catch (error) {
+        console.error('Erro ao carregar membros:', error);
+        document.getElementById('membersContainer').innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">Erro ao carregar membros. Tente novamente mais tarde.</p>';
+      }
+    }
+  </script>
+</body>
+</html>

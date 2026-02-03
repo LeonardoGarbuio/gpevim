@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Exemplo da Silva",
+        "role": "Prof. Dr.",
+        "category": "coordenadores",
+        "local_image_path": "exemplo.jpg",
+        "lattes_url": "http://lattes.cnpq.br/123456789",
+        "research_topic": "Materiais Avançados"
+    },
+    {
+        "name": "Maria Souza",
+        "role": "Mestranda",
+        "category": "iniciacao_cientifica",
+        "image_url": "https://example.com/foto.jpg",
+        "research_topic": "Física do Estado Sólido"
+    }
+]
