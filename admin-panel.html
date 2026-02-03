@@ -1,327 +1,253 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - GPEVIM</title>
     <link rel="stylesheet" href="css/estilo.css">
     <style>
-
-        
-        .logout-btn {
-            background: #d32f2f;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .logout-btn:hover {
-            background: #b71c1c;
-        }
-        
         .admin-section {
             background: white;
             border-radius: 10px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border: 1px solid #ccc;
+            /* Visibilidade extra */
         }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+
+        .form-group {
             margin-bottom: 20px;
         }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-        
+
         .form-group label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
             color: #333;
         }
-        
-        .form-group input, .form-group textarea {
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #444444d7;
-        }
-        
+
+        .form-group input,
         .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
         }
-        
-        .submit-btn {
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
             background: #444444d7;
             color: white;
-            padding: 15px 30px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .submit-btn:hover {
-            background: #333;
-        }
-        
-        .publications-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .publication-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            background: white;
-        }
-        
-        .publication-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        .publication-content {
-            padding: 20px;
-        }
-        
-        .publication-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .publication-link {
-            color: #444444d7;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .publication-link:hover {
-            text-decoration: underline;
-        }
-        
-        .delete-btn {
-            background: #d32f2f;
-            color: white;
-            border: none;
-            padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-            margin-top: 10px;
+            font-weight: bold;
         }
-        
+
+        .btn:hover {
+            background: #333;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .publications-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .publication-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+        }
+
+        .publication-info {
+            flex: 1;
+        }
+
+        .publication-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
         .delete-btn:hover {
-            background: #b71c1c;
+            background: #c82333;
         }
-        
+
         .edit-btn {
             background: #ffc107;
             color: #212529;
+            padding: 5px 10px;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 14px;
-            margin-right: 10px;
+            font-size: 12px;
         }
-        
+
         .edit-btn:hover {
             background: #e0a800;
         }
-        
+
         .modal {
             display: none;
+            /* Hidden by default */
             position: fixed;
+            /* Stay in place */
             z-index: 1000;
+            /* Sit on top */
             left: 0;
             top: 0;
             width: 100%;
+            /* Full width */
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
         }
-        
+
         .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 10px;
+            background-color: #fefefe;
+            margin: 10% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
             width: 80%;
+            /* Could be more or less, depending on screen size */
             max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
+            border-radius: 10px;
         }
-        
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
             cursor: pointer;
         }
-        
-        .close:hover {
-            color: #000;
-        }
-        
-        .success-message {
-            background: #4caf50;
-            color: white;
-            padding: 15px;
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
             border-radius: 5px;
-            margin-bottom: 20px;
-            display: none;
         }
-        
+
+        /* RESPONSIVIDADE */
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .publications-grid {
-                grid-template-columns: 1fr;
+            .publication-item {
+                flex-direction: column;
+                align-items: flex-start;
                 gap: 15px;
             }
-            
+
+            .publication-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
             .admin-section {
                 padding: 20px;
-                margin-bottom: 20px;
-            }
-            
-            .submit-btn {
-                width: 100%;
-                padding: 15px;
-                font-size: 16px;
-            }
-            
-            .form-group input, .form-group textarea {
-                font-size: 16px; /* Evita zoom no iOS */
-            }
-            
-            /* Ajustar layout do header */
-            main > div:first-child {
-                flex-direction: column;
-                gap: 15px;
-                align-items: stretch;
-            }
-            
-            main > div:first-child > div {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            main > div:first-child a {
-                text-align: center;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .admin-section {
-                padding: 15px;
-            }
-            
-            .form-group {
-                margin-bottom: 15px;
-            }
-            
-            .publication-card {
-                padding: 15px;
-            }
-            
-            .publication-title {
-                font-size: 1.1em;
             }
         }
     </style>
 </head>
+
 <body>
     <main>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <h1>Painel Administrativo</h1>
             <div style="display: flex; gap: 15px; align-items: center;">
-                <a href="admin-members.html" style="background: #444444d7; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Gerenciar Membros</a>
+                <a href="admin-members.html"
+                    style="background: #444444d7; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Gerenciar
+                    Membros</a>
                 <button class="logout-btn" onclick="logout()">Sair</button>
             </div>
         </div>
-        
-        <div class="admin-section">
-            <h2>Adicionar Nova Publicação</h2>
-            
-            <div class="success-message" id="successMessage">
-                Publicação adicionada com sucesso!
-            </div>
-            
-            <form id="publicationForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="title">Título da Publicação:</label>
-                        <input type="text" id="title" name="title" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="author">Autor:</label>
-                        <input type="text" id="author" name="author" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="imageFile">Imagem da Publicação:</label>
-                        <input type="file" id="imageFile" name="imageFile" accept="image/*" style="padding: 8px; border: 2px solid #ddd; border-radius: 5px;">
-                        <small style="color: #666; font-size: 12px;">Ou cole uma URL da imagem abaixo</small>
-                        <input type="url" id="imageUrl" name="imageUrl" placeholder="https://exemplo.com/imagem.jpg" style="margin-top: 5px;">
-                        <div id="imagePreview" style="margin-top: 10px; display: none;">
-                            <img id="previewImg" src="" alt="Preview" style="max-width: 200px; max-height: 150px; border-radius: 5px;">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="publicationUrl">Link da Publicação:</label>
-                        <input type="url" id="publicationUrl" name="publicationUrl" required placeholder="https://exemplo.com/publicacao">
-                    </div>
-                    
-                    <div class="form-group full-width">
-                        <label for="description">Descrição (opcional):</label>
-                        <textarea id="description" name="description" placeholder="Breve descrição da publicação..."></textarea>
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">Adicionar Publicação</button>
-            </form>
-        </div>
 
-        <div class="admin-section">
-            <h2>Publicações Existentes</h2>
-            <div class="publications-grid" id="publicationsGrid">
+        <section class="admin-section">
+            <h2>Adicionar Nova Publicação</h2>
+            <form id="publicationForm">
+                <div class="form-group">
+                    <label for="title">Título da Publicação *</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Autor(es) *</label>
+                    <input type="text" id="author" name="author" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageFile">Imagem da Capa *</label>
+                    <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+                    <img id="imagePreview" class="image-preview" style="display: none;">
+                </div>
+
+                <div class="form-group">
+                    <label for="publicationUrl">Link da Publicação *</label>
+                    <input type="url" id="publicationUrl" name="publicationUrl" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descrição</label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+
+                <button type="submit" class="btn">Adicionar Publicação</button>
+            </form>
+        </section>
+
+        <section class="admin-section">
+            <h2>Publicações Recentes</h2>
+            <div id="publicationsList" class="publications-list">
                 <!-- As publicações serão carregadas aqui dinamicamente -->
             </div>
-        </div>
+        </section>
     </main>
 
     <!-- Modal de Edição -->
@@ -332,20 +258,12 @@
             <form id="editForm">
                 <input type="hidden" id="editId">
                 <div class="form-group">
-                    <label for="editTitle">Título *</label>
+                    <label for="editTitle">Título</label>
                     <input type="text" id="editTitle" required>
                 </div>
                 <div class="form-group">
-                    <label for="editAuthor">Autor *</label>
+                    <label for="editAuthor">Autor(es)</label>
                     <input type="text" id="editAuthor" required>
-                </div>
-                <div class="form-group">
-                    <label for="editDescription">Descrição *</label>
-                    <textarea id="editDescription" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="editPublicationUrl">URL da Publicação *</label>
-                    <input type="url" id="editPublicationUrl" required>
                 </div>
                 <div class="form-group">
                     <label for="editImageFile">Nova Imagem (opcional)</label>
@@ -356,14 +274,24 @@
                     <label for="editImageUrl">URL da Imagem Atual</label>
                     <input type="url" id="editImageUrl" readonly>
                 </div>
-                <button type="submit" class="btn">Atualizar Publicação</button>
+                <div class="form-group">
+                    <label for="editPublicationUrl">Link</label>
+                    <input type="url" id="editPublicationUrl" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Descrição</label>
+                    <textarea id="editDescription"></textarea>
+                </div>
+                <button type="submit" class="btn">Atualizar</button>
             </form>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2025 GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Todos os direitos reservados.</p>
-    </footer>
+    <!-- Scripts do Supabase e Utils -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/utils.js"></script>
 
     <script>
         // Verificar se está logado
@@ -377,210 +305,14 @@
             window.location.href = 'index.html';
         }
 
-        // Carregar publicações existentes
-        async function loadPublications() {
-            try {
-                const response = await fetch('/api/publications');
-                const publications = await response.json();
-                const grid = document.getElementById('publicationsGrid');
-                
-                if (publications.length === 0) {
-                    grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #666;">Nenhuma publicação cadastrada ainda.</p>';
-                    return;
-                }
-                
-                grid.innerHTML = publications.map((pub) => `
-                    <div class="publication-card">
-                        <img src="${pub.image_url}" alt="${pub.title}" class="publication-image" onerror="this.src='img/foto1.jpg'">
-                        <div class="publication-content">
-                            <div class="publication-title">${pub.title}</div>
-                            <p><strong>Autor:</strong> ${pub.author}</p>
-                            ${pub.description ? `<p>${pub.description}</p>` : ''}
-                            <a href="${pub.publication_url}" target="_blank" class="publication-link">Ver Publicação</a>
-                            <br>
-                            <button class="edit-btn" onclick="editPublication(${pub.id})">Editar</button>
-                            <button class="delete-btn" onclick="deletePublication(${pub.id})">Excluir</button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error('Erro ao carregar publicações:', error);
-                document.getElementById('publicationsGrid').innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #d32f2f;">Erro ao carregar publicações.</p>';
-            }
-        }
-
-        // Adicionar nova publicação
-        document.getElementById('publicationForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            let imageUrl = formData.get('imageUrl');
-            const imageFile = formData.get('imageFile');
-            
-            // Se há um arquivo selecionado, fazer upload primeiro
-            if (imageFile && imageFile.size > 0) {
-                try {
-                    const uploadFormData = new FormData();
-                    uploadFormData.append('image', imageFile);
-                    
-                    const uploadResponse = await fetch('/api/upload-image', {
-                        method: 'POST',
-                        body: uploadFormData
-                    });
-                    
-                    if (uploadResponse.ok) {
-                        const uploadResult = await uploadResponse.json();
-                        imageUrl = uploadResult.imageUrl;
-                    } else {
-                        alert('Erro ao fazer upload da imagem');
-                        return;
-                    }
-                } catch (error) {
-                    console.error('Erro no upload:', error);
-                    alert('Erro ao fazer upload da imagem');
-                    return;
-                }
-            }
-            
-            // Verificar se temos uma imagem (URL ou arquivo)
-            if (!imageUrl) {
-                alert('Por favor, selecione uma imagem ou forneça uma URL');
-                return;
-            }
-            
-            const publication = {
-                title: formData.get('title'),
-                author: formData.get('author'),
-                imageUrl: imageUrl,
-                publicationUrl: formData.get('publicationUrl'),
-                description: formData.get('description')
-            };
-            
-            try {
-                const response = await fetch('/api/publications', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(publication)
-                });
-                
-                if (response.ok) {
-                    // Mostrar mensagem de sucesso
-                    const successMessage = document.getElementById('successMessage');
-                    successMessage.style.display = 'block';
-                    setTimeout(() => {
-                        successMessage.style.display = 'none';
-                    }, 3000);
-                    
-                    // Limpar formulário e recarregar publicações
-                    this.reset();
-                    document.getElementById('imagePreview').style.display = 'none';
-                    loadPublications();
-                } else {
-                    const error = await response.json();
-                    alert('Erro ao adicionar publicação: ' + error.error);
-                }
-            } catch (error) {
-                console.error('Erro ao adicionar publicação:', error);
-                alert('Erro ao adicionar publicação. Tente novamente.');
-            }
-        });
-
-        // Excluir publicação
-        async function deletePublication(id) {
-            if (confirm('Tem certeza que deseja excluir esta publicação?')) {
-                try {
-                    const response = await fetch(`/api/publications/${id}`, {
-                        method: 'DELETE'
-                    });
-                    
-                    if (response.ok) {
-                        loadPublications();
-                    } else {
-                        const error = await response.json();
-                        alert('Erro ao excluir publicação: ' + error.error);
-                    }
-                } catch (error) {
-                    console.error('Erro ao excluir publicação:', error);
-                    alert('Erro ao excluir publicação. Tente novamente.');
-                }
-            }
-        }
-
-        // Preview de imagem
-        document.getElementById('imageFile').addEventListener('change', function(e) {
+        // Preview da imagem
+        document.getElementById('imageFile').addEventListener('change', function (e) {
             const file = e.target.files[0];
+            const preview = document.getElementById('imagePreview');
+
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Preview de URL de imagem
-        document.getElementById('imageUrl').addEventListener('input', function(e) {
-            const url = e.target.value;
-            if (url) {
-                document.getElementById('previewImg').src = url;
-                document.getElementById('imagePreview').style.display = 'block';
-            } else {
-                document.getElementById('imagePreview').style.display = 'none';
-            }
-        });
-
-        // Funções de edição
-        async function editPublication(id) {
-            try {
-                const response = await fetch(`/api/publications/${id}`);
-                if (!response.ok) {
-                    alert('Erro ao carregar dados da publicação');
-                    return;
-                }
-                
-                const publication = await response.json();
-                
-                // Preencher o modal com os dados atuais
-                document.getElementById('editId').value = publication.id;
-                document.getElementById('editTitle').value = publication.title;
-                document.getElementById('editAuthor').value = publication.author;
-                document.getElementById('editDescription').value = publication.description || '';
-                document.getElementById('editPublicationUrl').value = publication.publication_url;
-                document.getElementById('editImageUrl').value = publication.image_url;
-                
-                // Mostrar o modal
-                document.getElementById('editModal').style.display = 'block';
-            } catch (error) {
-                console.error('Erro ao carregar publicação:', error);
-                alert('Erro ao carregar dados da publicação');
-            }
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-            document.getElementById('editForm').reset();
-            document.getElementById('editImagePreview').style.display = 'none';
-        }
-
-        // Fechar modal ao clicar fora dele
-        window.onclick = function(event) {
-            const modal = document.getElementById('editModal');
-            if (event.target === modal) {
-                closeEditModal();
-            }
-        }
-
-        // Preview da imagem no modal de edição
-        document.getElementById('editImageFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const preview = document.getElementById('editImagePreview');
-            
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     preview.src = e.target.result;
                     preview.style.display = 'block';
                 };
@@ -590,72 +322,215 @@
             }
         });
 
-        // Submissão do formulário de edição
-        document.getElementById('editForm').addEventListener('submit', async function(e) {
+        // Adicionar publicação
+        document.getElementById('publicationForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
-            const id = document.getElementById('editId').value;
-            let imageUrl = document.getElementById('editImageUrl').value;
-            const imageFile = document.getElementById('editImageFile').files[0];
-            
-            // Se há um arquivo selecionado, fazer upload primeiro
-            if (imageFile && imageFile.size > 0) {
-                try {
-                    const uploadFormData = new FormData();
-                    uploadFormData.append('image', imageFile);
-                    
-                    const uploadResponse = await fetch('/api/upload-image', {
-                        method: 'POST',
-                        body: uploadFormData
-                    });
-                    
-                    if (uploadResponse.ok) {
-                        const uploadResult = await uploadResponse.json();
-                        imageUrl = uploadResult.imageUrl;
-                    } else {
-                        alert('Erro ao fazer upload da nova imagem');
-                        return;
-                    }
-                } catch (error) {
-                    console.error('Erro no upload:', error);
-                    alert('Erro ao fazer upload da nova imagem');
-                    return;
-                }
+
+            const imageFile = document.getElementById('imageFile').files[0];
+
+            if (!imageFile) {
+                alert('Por favor, selecione uma imagem');
+                return;
             }
-            
-            const publicationData = {
-                title: document.getElementById('editTitle').value,
-                author: document.getElementById('editAuthor').value,
-                imageUrl: imageUrl,
-                publicationUrl: document.getElementById('editPublicationUrl').value,
-                description: document.getElementById('editDescription').value
-            };
-            
+
             try {
-                const response = await fetch(`/api/publications/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(publicationData)
-                });
-                
-                if (response.ok) {
-                    alert('Publicação atualizada com sucesso!');
-                    closeEditModal();
-                    loadPublications();
-                } else {
-                    const error = await response.json();
-                    alert('Erro ao atualizar publicação: ' + error.error);
-                }
+                // 1. Redimensionar imagem
+                const resizedBlob = await resizeImage(imageFile, 800, 800, 0.8);
+
+                // 2. Upload para Supabase
+                const imageUrl = await uploadImageToSupabase(resizedBlob, imageFile.name, 'publications-images');
+
+                // 3. Adicionar publicação no banco
+                const publicationData = {
+                    title: document.getElementById('title').value,
+                    author: document.getElementById('author').value,
+                    image_url: imageUrl,
+                    publication_url: document.getElementById('publicationUrl').value,
+                    description: document.getElementById('description').value
+                };
+
+                const { error } = await window.supabaseClient
+                    .from('publications')
+                    .insert([publicationData]);
+
+                if (error) throw error;
+
+                alert('Publicação adicionada com sucesso!');
+                document.getElementById('publicationForm').reset();
+                document.getElementById('imagePreview').style.display = 'none';
+                loadPublications();
+
             } catch (error) {
-                console.error('Erro ao atualizar publicação:', error);
-                alert('Erro ao atualizar publicação. Tente novamente.');
+                console.error('Erro:', error);
+                alert('Erro ao adicionar publicação: ' + error.message);
             }
         });
 
-        // Carregar publicações ao iniciar
-        loadPublications();
+        // Carregar publicações
+        async function loadPublications() {
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('publications')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const list = document.getElementById('publicationsList');
+
+                if (data.length === 0) {
+                    list.innerHTML = '<p>Nenhuma publicação encontrada.</p>';
+                    return;
+                }
+
+                list.innerHTML = data.map(pub => `
+                    <div class="publication-item">
+                        <div class="publication-info">
+                            <h3>${pub.title}</h3>
+                            <p><strong>Autor:</strong> ${pub.author}</p>
+                            <p><a href="${pub.publication_url}" target="_blank">Acessar Publicação</a></p>
+                            ${pub.description ? `<p style="color: #666; font-size: 0.9em;">${pub.description.substring(0, 100)}...</p>` : ''}
+                        </div>
+                        <div class="publication-actions">
+                            <button class="edit-btn" onclick="editPublication(${pub.id})">Editar</button>
+                            <button class="delete-btn" onclick="deletePublication(${pub.id})">Apagar</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar publicações:', error);
+                document.getElementById('publicationsList').innerHTML = '<p>Erro ao carregar publicações.</p>';
+            }
+        }
+
+        // Deletar publicação
+        async function deletePublication(id) {
+            if (!confirm('Tem certeza que deseja apagar esta publicação?')) {
+                return;
+            }
+
+            try {
+                const { error } = await window.supabaseClient
+                    .from('publications')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                alert('Publicação removida com sucesso!');
+                loadPublications();
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao remover publicação: ' + error.message);
+            }
+        }
+
+        // Funções de edição
+        async function editPublication(id) {
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('publications')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+
+                if (error) throw error;
+
+                const pub = data;
+
+                // Preencher o modal com os dados atuais
+                document.getElementById('editId').value = pub.id;
+                document.getElementById('editTitle').value = pub.title;
+                document.getElementById('editAuthor').value = pub.author;
+                document.getElementById('editImageUrl').value = pub.image_url;
+                document.getElementById('editPublicationUrl').value = pub.publication_url;
+                document.getElementById('editDescription').value = pub.description || '';
+
+                // Mostrar o modal
+                document.getElementById('editModal').style.display = 'block';
+            } catch (error) {
+                console.error('Erro ao carregar publicação:', error);
+                alert('Erro ao buscar dados da publicação');
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            document.getElementById('editForm').reset();
+            document.getElementById('editImagePreview').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+
+        document.getElementById('editImageFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('editImagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        document.getElementById('editForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editId').value;
+            let imageUrl = document.getElementById('editImageUrl').value;
+            const imageFile = document.getElementById('editImageFile').files[0];
+
+            try {
+                if (imageFile && imageFile.size > 0) {
+                    const resizedBlob = await resizeImage(imageFile, 800, 800, 0.8);
+                    imageUrl = await uploadImageToSupabase(resizedBlob, imageFile.name, 'publications-images');
+                }
+
+                const publicationData = {
+                    title: document.getElementById('editTitle').value,
+                    author: document.getElementById('editAuthor').value,
+                    image_url: imageUrl,
+                    publication_url: document.getElementById('editPublicationUrl').value,
+                    description: document.getElementById('editDescription').value,
+                    updated_at: new Date()
+                };
+
+                const { error } = await window.supabaseClient
+                    .from('publications')
+                    .update(publicationData)
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                alert('Publicação atualizada com sucesso!');
+                closeEditModal();
+                loadPublications();
+
+            } catch (error) {
+                console.error('Erro ao atualizar publicação:', error);
+                alert('Erro ao atualizar publicação: ' + error.message);
+            }
+        });
+
+        // Carregar dados ao iniciar
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.supabaseClient) {
+                loadPublications();
+            } else {
+                alert("Erro: Supabase não inicializado.");
+            }
+        });
     </script>
 </body>
-</html> 
+
+</html>

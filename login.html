@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,26 +13,26 @@
             padding: 30px;
             background: #fff;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .login-form {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-        
+
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-        
+
         .form-group label {
             font-weight: bold;
             color: #333;
         }
-        
+
         .form-group input {
             padding: 12px;
             border: 2px solid #ddd;
@@ -39,12 +40,12 @@
             font-size: 16px;
             transition: border-color 0.3s;
         }
-        
+
         .form-group input:focus {
             outline: none;
             border-color: #444444d7;
         }
-        
+
         .login-btn {
             background: #444444d7;
             color: white;
@@ -56,31 +57,31 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-        
+
         .login-btn:hover {
             background: #333;
         }
-        
+
         .error-message {
             color: #d32f2f;
             text-align: center;
             display: none;
         }
-        
+
         .back-link {
             text-align: center;
             margin-top: 20px;
         }
-        
+
         .back-link a {
             color: #444444d7;
             text-decoration: none;
         }
-        
+
         .back-link a:hover {
             text-decoration: underline;
         }
-        
+
         /* RESPONSIVIDADE */
         @media (max-width: 768px) {
             .login-container {
@@ -88,82 +89,107 @@
                 padding: 25px;
                 max-width: 90%;
             }
-            
+
             .form-group input {
-                font-size: 16px; /* Evita zoom no iOS */
+                font-size: 16px;
+                /* Evita zoom no iOS */
             }
         }
-        
+
         @media (max-width: 480px) {
             .login-container {
                 margin: 30px auto;
                 padding: 20px;
             }
-            
+
             h1 {
                 font-size: 1.8em;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <h1 style="text-align: center; margin-bottom: 30px;">Área Administrativa</h1>
-        
+
         <form class="login-form" id="loginForm">
             <div class="form-group">
                 <label for="username">Usuário:</label>
                 <input type="text" id="username" name="username" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="password">Senha:</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            
+
             <div class="error-message" id="errorMessage">
                 Usuário ou senha incorretos!
             </div>
-            
+
             <button type="submit" class="login-btn">Entrar</button>
         </form>
-        
+
         <div class="back-link">
             <a href="index.html">← Voltar ao site principal</a>
         </div>
     </div>
 
+    <!-- Scripts do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Verificação Hardcoded (Backup)
+            if (username === 'ADM' && password === 'fisica') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                window.location.href = 'admin-panel.html';
+                return;
+            }
+
+            // Verificação via Supabase
             try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
+                if (!window.supabaseClient) {
+                    // Se o Supabase falhar, tenta apenas o login backup e erro se falhar
+                    console.error("Cliente Supabase não inicializado.");
+                    errorMessage.textContent = "Erro de configuração. Tente login local.";
+                    errorMessage.style.display = 'block';
+                    return;
+                }
+
+                // Query direto na tabela admin_users
+                const { data, error } = await window.supabaseClient
+                    .from('admin_users')
+                    .select('*')
+                    .eq('username', username)
+                    .eq('password_hash', password)
+                    .maybeSingle(); // maybeSingle retorna null se não achar, em vez de erro
+
+                if (data) {
                     localStorage.setItem('adminLoggedIn', 'true');
                     window.location.href = 'admin-panel.html';
                 } else {
-                    document.getElementById('errorMessage').style.display = 'block';
+                    errorMessage.textContent = "Usuário ou senha incorretos!";
+                    errorMessage.style.display = 'block';
                     document.getElementById('password').value = '';
                 }
             } catch (error) {
                 console.error('Erro no login:', error);
-                document.getElementById('errorMessage').style.display = 'block';
+                errorMessage.textContent = "Erro ao conectar com o servidor.";
+                errorMessage.style.display = 'block';
                 document.getElementById('password').value = '';
             }
         });
     </script>
 </body>
+
 </html>

@@ -1,0 +1,9 @@
+// Configurações do Supabase
+// Substitua pelas suas credenciais REAIS
+const SUPABASE_URL = 'https://lmrdnskjgvulufnctsfo.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtcmRtc2tqZ3Z1bHVmbWNmc2ZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxNDQ1ODAsImV4cCI6MjA4NTcyMDU4MH0.ojU3m4_t65Q3MeuHvTY4Ah68QONUP9dAD2bvDwZk5lw';
+
+window.SUPABASE_CONFIG = {
+    url: SUPABASE_URL,
+    key: SUPABASE_KEY
+};

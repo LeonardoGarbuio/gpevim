@@ -1,226 +1,252 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta Tags -->
     <title>Publicações - GPEVIM</title>
-    <meta name="description" content="Acesse as publicações científicas do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Artigos, pesquisas e trabalhos acadêmicos.">
-    <meta name="keywords" content="GPEVIM, publicações, artigos científicos, pesquisa, materiais, propriedades eletrônicas">
+    <meta name="description"
+        content="Acesse as publicações científicas do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Artigos, pesquisas e trabalhos acadêmicos.">
+    <meta name="keywords"
+        content="GPEVIM, publicações, artigos científicos, pesquisa, materiais, propriedades eletrônicas">
     <meta name="author" content="GPEVIM">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="img/logo.png">
     <link rel="apple-touch-icon" href="img/logo.png">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gpevim.com/publications.html">
     <meta property="og:title" content="Publicações - GPEVIM">
-    <meta property="og:description" content="Acesse as publicações científicas do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Artigos, pesquisas e trabalhos acadêmicos.">
+    <meta property="og:description"
+        content="Acesse as publicações científicas do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Artigos, pesquisas e trabalhos acadêmicos.">
     <meta property="og:image" content="img/logo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://gpevim.com/publications.html">
     <meta property="twitter:title" content="Publicações - GPEVIM">
-    <meta property="twitter:description" content="Acesse as publicações científicas do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Artigos, pesquisas e trabalhos acadêmicos.">
+    <meta property="twitter:description"
+        content="Acesse as publicações científicas do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Artigos, pesquisas e trabalhos acadêmicos.">
     <meta property="twitter:image" content="img/logo.png">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://gpevim.com/publications.html">
-    
+
     <link rel="stylesheet" href="css/estilo.css">
+    <style>
+        .publications-container {
+            margin-top: 30px;
+        }
+
+        .publications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .publication-card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fefefe;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .publication-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .publication-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .publication-content {
+            padding: 20px;
+        }
+
+        .publication-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            line-height: 1.3;
+        }
+
+        .publication-author {
+            color: #666;
+            margin-bottom: 12px;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .publication-description {
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .publication-link {
+            display: inline-block;
+            background: #444444d7;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .publication-link:hover {
+            background: #333;
+        }
+
+        .no-publications {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .publications-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .publication-content {
+                padding: 15px;
+            }
+
+            .publication-title {
+                font-size: 1.1em;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <header>
-    <img class="logo" src="img/logo.png" alt="Logo do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais">
+        <img class="logo" src="img/logo.png"
+            alt="Logo do GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais">
 
-    <nav class="navbar" role="navigation" aria-label="Menu principal">
-      <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
-        ☰
-      </button>
-      
-      <ul id="menu-list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About us</a></li>
-        <li class="active"><a href="publications.html">Publications</a></li>
-        <li><a href="member.html" aria-current="page">Members</a></li>
-        <li><a href="news.html">News</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="materials.html">Materials</a></li>
-      </ul>
-      
-      <a class="instagram-link" href="https://www.instagram.com/gpevim/?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Seguir GPEVIM no Instagram">
-        <img src="img/instagram.png" alt="Instagram">
-      </a>
-      
-      
-    </nav>
-  </header>
+        <nav class="navbar" role="navigation" aria-label="Menu principal">
+            <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+                ☰
+            </button>
+
+            <ul id="menu-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About us</a></li>
+                <li class="active"><a href="publications.html">Publications</a></li>
+                <li><a href="member.html" aria-current="page">Members</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="materials.html">Materials</a></li>
+            </ul>
+
+            <a class="instagram-link" href="https://www.instagram.com/gpevim/?hl=en" target="_blank"
+                rel="noopener noreferrer" aria-label="Seguir GPEVIM no Instagram">
+                <img src="img/instagram.png" alt="Instagram">
+            </a>
+
+
+        </nav>
+    </header>
     <main>
         <h1>Publications</h1>
-        
+
         <div class="publications-container">
             <div class="publications-grid" id="publicationsGrid">
                 <!-- As publicações serão carregadas aqui dinamicamente -->
             </div>
-            
+
             <div class="no-publications" id="noPublications" style="display: none;">
                 <p>Nenhuma publicação disponível no momento.</p>
             </div>
         </div>
-        
+
 
     </main>
-     <footer>
-    <p>&copy; 2025 GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Todos os direitos reservados.</p>
-            <a href="login.html" class="admin-link-footer" title="Área Administrativa">Admin</a>
-  </footer>
+    <footer>
+        <p>&copy; 2025 GPEVIM - Grupo de Propriedades Eletrônicos e Vibracionais em Materiais. Todos os direitos
+            reservados.</p>
+        <a href="login.html" class="admin-link-footer" title="Área Administrativa">Admin</a>
+    </footer>
 
-      <script src="js/script.js"></script>
-    
-         <style>
-         .publications-container {
-             margin-top: 30px;
-         }
-         
-         .publications-grid {
-             display: grid;
-             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-             gap: 25px;
-             margin-bottom: 40px;
-         }
-         
-         .publication-card {
-             border: 1px solid #ccc;
-             border-radius: 10px;
-             overflow: hidden;
-             background: #fefefe;
-             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-             transition: all 0.3s ease;
-         }
-         
-                   .publication-card:hover {
-              transform: translateY(-3px);
-          }
-         
-         .publication-image {
-             width: 100%;
-             height: 200px;
-             object-fit: cover;
-         }
-         
-         .publication-content {
-             padding: 20px;
-         }
-         
-         .publication-title {
-             font-size: 1.2em;
-             font-weight: bold;
-             margin-bottom: 10px;
-             color: #2c3e50;
-             line-height: 1.3;
-         }
-         
-         .publication-author {
-             color: #666;
-             margin-bottom: 12px;
-             font-style: italic;
-             font-size: 0.9em;
-         }
-         
-         .publication-description {
-             color: #555;
-             line-height: 1.5;
-             margin-bottom: 15px;
-             font-size: 0.9em;
-         }
-         
-         .publication-link {
-             display: inline-block;
-             background: #444444d7;
-             color: white;
-             padding: 10px 20px;
-             text-decoration: none;
-             border-radius: 5px;
-             font-weight: bold;
-             font-size: 14px;
-             transition: background 0.3s ease;
-         }
-         
-         .publication-link:hover {
-             background: #333;
-         }
-         
-         .no-publications {
-             text-align: center;
-             padding: 60px 20px;
-             color: #666;
-             font-style: italic;
-         }
-         
-         @media (max-width: 768px) {
-             .publications-grid {
-                 grid-template-columns: 1fr;
-                 gap: 20px;
-             }
-             
-             .publication-content {
-                 padding: 15px;
-             }
-             
-             .publication-title {
-                 font-size: 1.1em;
-             }
-         }
-     </style>
-    
+    <script src="js/script.js"></script>
+
+    <!-- Scripts do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+
     <script>
         // Carregar publicações ao carregar a página
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             loadPublications();
         });
-        
-                    async function loadPublications() {
-                try {
-                    const response = await fetch('/api/publications');
-                    const publications = await response.json();
-                    const grid = document.getElementById('publicationsGrid');
-                    const noPublications = document.getElementById('noPublications');
-                    
-                    if (publications.length === 0) {
-                        grid.style.display = 'none';
-                        noPublications.style.display = 'block';
-                        return;
-                    }
-                    
-                    grid.style.display = 'grid';
-                    noPublications.style.display = 'none';
-                    
-                    grid.innerHTML = publications.map(pub => `
-                        <div class="publication-card">
-                            <img src="${pub.image_url}" alt="${pub.title}" class="publication-image" onerror="this.src='img/foto1.jpg'">
-                            <div class="publication-content">
-                                <div class="publication-title">${pub.title}</div>
-                                <div class="publication-author">Por: ${pub.author}</div>
-                                ${pub.description ? `<div class="publication-description">${pub.description}</div>` : ''}
-                                <a href="${pub.publication_url}" target="_blank" class="publication-link">Ver Publicação</a>
-                            </div>
-                        </div>
-                    `).join('');
-                } catch (error) {
-                    console.error('Erro ao carregar publicações:', error);
-                    const grid = document.getElementById('publicationsGrid');
-                    const noPublications = document.getElementById('noPublications');
+
+        async function loadPublications() {
+            const grid = document.getElementById('publicationsGrid');
+            const noPublications = document.getElementById('noPublications');
+
+            try {
+                let publications = [];
+
+                if (window.supabaseClient) {
+                    // Buscar do Supabase
+                    const { data, error } = await window.supabaseClient
+                        .from('publications')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+                    publications = data;
+                } else {
+                    console.warn("Supabase não configurado. Exibindo estado vazio.");
+                }
+
+                if (!publications || publications.length === 0) {
                     grid.style.display = 'none';
                     noPublications.style.display = 'block';
-                    noPublications.innerHTML = '<p>Erro ao carregar publicações. Tente novamente mais tarde.</p>';
+                    return;
                 }
+
+                grid.style.display = 'grid';
+                noPublications.style.display = 'none';
+
+                grid.innerHTML = publications.map(pub => `
+                    <div class="publication-card">
+                        <img src="${pub.image_url}" alt="${pub.title}" class="publication-image" onerror="this.src='img/foto1.jpg'">
+                        <div class="publication-content">
+                            <div class="publication-title">${pub.title}</div>
+                            <div class="publication-author">Por: ${pub.author}</div>
+                            ${pub.description ? `<div class="publication-description">${pub.description}</div>` : ''}
+                            <a href="${pub.publication_url}" target="_blank" class="publication-link">Ver Publicação</a>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar publicações:', error);
+
+                grid.style.display = 'none';
+                noPublications.style.display = 'block';
+                noPublications.innerHTML = '<p>Erro ao carregar publicações. Tente novamente mais tarde.</p>';
             }
+        }
     </script>
 </body>
+
 </html>
